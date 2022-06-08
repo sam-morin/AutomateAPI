@@ -81,7 +81,7 @@ function Invoke-AutomateCommand {
                 $FormattedCommand="powershell.exe!!! -NonInteractive -Command ""`$WorkingDirectory=[System.Environment]::ExpandEnvironmentVariables('$WorkingDirectory'); Set-Location -Path `$WorkingDirectory -ErrorAction Stop; $Command"""
             } ElseIf ($sh) {
                 $FormattedCommand="cd / && $Command"
-            }
+            } Else {
                 $FormattedCommand="cmd.exe!!! /c ""CD /D ""$WorkingDirectory"" && $Command"""
             }
             $CommandBody = $FormattedCommand
