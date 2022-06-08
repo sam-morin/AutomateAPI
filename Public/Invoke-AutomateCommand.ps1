@@ -51,6 +51,7 @@ function Invoke-AutomateCommand {
         [Parameter(ParameterSetName = 'ExecuteCommand')]
         [Parameter(ParameterSetName = 'PassthroughObjects')]
         [switch]$PowerShell,
+        [swicth]$sh,
         [Parameter(ParameterSetName = 'CommandID', Mandatory = $True)]
         [int]$CommandID=2,
         [Parameter(ParameterSetName = 'CommandID')]
@@ -78,7 +79,9 @@ function Invoke-AutomateCommand {
             If ($PowerShell) {
                 $Command=$Command -Replace '"','\"'
                 $FormattedCommand="powershell.exe!!! -NonInteractive -Command ""`$WorkingDirectory=[System.Environment]::ExpandEnvironmentVariables('$WorkingDirectory'); Set-Location -Path `$WorkingDirectory -ErrorAction Stop; $Command"""
-            } Else {
+            } ElseIf ($sh) {
+                $FormattedCommand="cd / && $Command"
+            }
                 $FormattedCommand="cmd.exe!!! /c ""CD /D ""$WorkingDirectory"" && $Command"""
             }
             $CommandBody = $FormattedCommand
